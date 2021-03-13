@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MyBlog~</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.js"></script>
+</head>
+<body>
+<a href="/">首页</a>
+<h2>欢迎 {U1048596.solar.earth.human}，请 <a href="/register.html">注册</a> 或 <a href="/post_note.html">发表帖子</a></h2>
+<div id="app">
+    <h5>贴子列表：</h5>
+    <div v-for="note in info">
+        <li>作者：{{note.author}}</li>
+        <li>标题：<a :href="'/read_note/' + note.id">{{note.title}}</a></li>
+        <li>内容：{{note.body}}</li>
+        <li>浏览数：{{note.view_num}}</li>
+        <li>评论数：{{note.comment_num}}</li>
+        <li>发表时间：{{note.published_datetime}}</li>
+        <br>
+
+    </div>
+
+
+    <p>现在时间是：{{date}}</p>
+</div>
+<script>var app = new Vue({
+    el: '#app',
+    data() {
+        return {
+            info: undefined,
+            date: new Date()
+        }
+    },
+    mounted() {
+        let _this = this
+        axios
+            .get('/api/get_note_list')
+            .then(response => (this.info = response.data))
+        this.timer = setInterval(() => {
+            _this.date = new Date(); // 修改数据date
+        }, 1000)
+    }
+})</script>
+</body>
+</html>
